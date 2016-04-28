@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>vue测试</title>
+    <link rel="stylesheet" href="./styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="./styles/dataTables.bootstrap.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+       body
+       {
+          padding-left: 20px;
+          padding-right: 20px;
+       }
+    </style>
+</head>
+<body>
+  <div id="vueTestCtrl">
+    <div>
+      <h1>省市级联控件使用</h1>
+     <select v-location="location" type="province"></select>
+     <select v-location="location" type="city"></select>
+     <input type="button" v-on:click="getLocation()" value="点击获取" />
+    </div>
+    <div>
+      <h1>table分页</h1>
+      <p>我这里用的是datatable原来样式</p>
+      <div class="dataTables_wrapper form-inline no-footer">
+       <div class="row">
+           <div class="col-sm-6">
+               <div class="dataTables_filter"><label>搜索<input type="search" class="form-control input-sm" placeholder="姓名/性别/手机号" aria-controls="editable" v-model="searchkeyword"></label></div>
+           </div>
+           <div class="col-sm-6">
+               <div class="dropdown pull-right">
+                   <a id="table_row_setting" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       设置显示列<span class="caret"></span>
+                   </a>
+                   <ul id="menu2" class="dropdown-menu" aria-labelledby="table_row_setting" style="right: 0;left:auto;height: 300px;overflow-y:scroll;">
+                       <li v-for="colunmn in showtotalcolumns"><a href="javascript:" v-on:click="setShowColumn(colunmn)"><input type="checkbox" checked="{{checkShowColumn(colunmn)}}">{{colunmn}}</a></li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+      <table class="table dataTable table-striped table-bordered table-hover">
+          <thead>
+              <tr>
+                  <th v-show='checkShowColumn("姓名")' class="sorting" v-bind:class="[getSortType('member_name')]" v-on:click="sort('member_name')">姓名</th>
+                  <th v-show='checkShowColumn("性别")' class="sorting" v-bind:class="[getSortType('member_sex')]" v-on:click="sort('member_sex')">性别</th>
+                  <th v-show='checkShowColumn("手机号")' class="sorting" v-bind:class="[getSortType('member_mobile')]" v-on:click="sort('member_mobile')">手机号</th>
+                  <th>操作</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="gradeX" v-for="member in membersList" v-show="membersList.length>0">
+                  <td v-show='checkShowColumn("姓名")' v-text="member.member_name"></td>
+                  <td v-show='checkShowColumn("性别")' v-text="member.member_sex"></td>
+                  <td v-show='checkShowColumn("手机号")' v-text="member.member_mobile"></td>
+                  <td class="text-center" style="width: 10%">
+                      <div>
+                          <a title="编辑报名信息" v-on:click="editMember(member)">
+                              编辑
+                          </a>
+                          <a title="删除该报名记录" v-on:click="clickDelMember(member)">
+                              删除
+                          </a>
+                      </div>
+                  </td>
+              </tr>
+              <tr v-show="membersList.length==0">
+                  <td colspan="4">暂无符合条件的数据</td>
+              </tr>
+          </tbody>
+      </table>
+      <div v-pager="pageConf"></div>
+  </div>
+    </div>
+  </div>
+  <script src="./vue/vue.min.js" type="application/javascript"></script>
+  <script src="./scripts/jquery-2.1.1.js" type="application/javascript"></script>
+  <script src="./scripts/bootstrap.min.js" type="application/javascript"></script>
+  <script src="./vue/vue-validator.min.js" type="application/javascript"></script>
+  <script src="./vue/vue-validator.extra.js" type="application/javascript"></script>
+  <script src="./directive/v.location.js" type="application/javascript"></script>
+  <script src="./directive/v.pager.js" type="application/javascript"></script>
+  <script src="./controller/vueTestCtrl.js" type="application/javascript"></script>
+</body>
+</html>
